@@ -65,12 +65,20 @@ export default class Routes extends RouteList {
         }
     }
 
-    // TODO: Task 1 Part 2:
+    // Task 1 Part 2:
 
     @Post
     async register(req: RouteRequest, user: User) {
+        if (user.email in userDB)
+            throw new Error("This email has been registered");
+
+        const pwdHash = bcrypt.hashSync(user.password, 10);
+        const userPwdHashed = Object.assign({}, user, { password: pwdHash });
+        userDB[user.email] = userPwdHashed;
+
+        const accessToken = signJwt(user.email);
         return {
-            accessToken: null,
+            accessToken,
         };
     }
 
