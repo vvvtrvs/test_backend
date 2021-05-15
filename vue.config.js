@@ -1,11 +1,11 @@
 module.exports = {
     devServer: {
         proxy: {
-            '.*': {
-                target: 'http://localhost:3000'
-            }
+            ".*": {
+                target: "http://localhost:3000",
+            },
         },
-        disableHostCheck: true
+        disableHostCheck: true,
     },
     lintOnSave: false,
     pluginOptions: {

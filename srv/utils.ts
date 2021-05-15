@@ -1,133 +1,216 @@
 import { User } from "auth";
-import "reflect-metadata"
+import "reflect-metadata";
 
-export const RouteListSymbol = Symbol("RouteListSymbol")
+export const RouteListSymbol = Symbol("RouteListSymbol");
 export class RouteList {
-    [RouteListSymbol]? : {
-        [key: string]: Route
-    }
+    [RouteListSymbol]?: {
+        [key: string]: Route;
+    };
 }
 
 export interface Route {
-    name: string
-    path: string
-    method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
-    auth?: boolean
+    name: string;
+    path: string;
+    method: "GET" | "POST" | "PATCH" | "DELETE";
+    auth?: boolean;
 }
 
 export interface RouteRequest {
-    user? : User
+    user?: User;
 }
 
-export function Api(target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) : void;
-export function Api(args : Partial<Route>) : (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) => void;
-export function Api(target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
-    if(propertyKey) {
-        if(!descriptor) {
-            throw new Error("Invalid descriptor")
+export function Api(
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+): void;
+export function Api(
+    args: Partial<Route>
+): (
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => void;
+export function Api(
+    target: any,
+    propertyKey?: string,
+    descriptor?: PropertyDescriptor
+) {
+    if (propertyKey) {
+        if (!descriptor) {
+            throw new Error("Invalid descriptor");
         }
         Api({
-            path: '/' + propertyKey,
+            path: "/" + propertyKey,
         })(target, propertyKey, descriptor);
     } else {
-        const route : Partial<Route> = target;
+        const route: Partial<Route> = target;
         const routePath = route.path;
-        if(!routePath) {
-            throw new Error("Invalid path")
+        if (!routePath) {
+            throw new Error("Invalid path");
         }
-        return function (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) {
-            const auth = Reflect.getMetadata(authMetadataKey, target, propertyKey);
-            const routeList = target[RouteListSymbol] || (target[RouteListSymbol] = {});
+        return function (
+            target: RouteList,
+            propertyKey: string,
+            descriptor: PropertyDescriptor
+        ) {
+            const auth = Reflect.getMetadata(
+                authMetadataKey,
+                target,
+                propertyKey
+            );
+            const routeList =
+                target[RouteListSymbol] || (target[RouteListSymbol] = {});
             routeList[routePath] = {
                 name: propertyKey,
                 path: routePath,
-                method: 'GET',
+                method: "GET",
                 auth: !!auth,
                 ...route,
-            }
+            };
         };
     }
 }
 
-export function Get(target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) : void;
-export function Get(path : string) : (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) => void;
-export function Get(target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
-    if(propertyKey) {
-        if(!descriptor) {
-            throw new Error("Invalid descriptor")
+export function Get(
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+): void;
+export function Get(
+    path: string
+): (
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => void;
+export function Get(
+    target: any,
+    propertyKey?: string,
+    descriptor?: PropertyDescriptor
+) {
+    if (propertyKey) {
+        if (!descriptor) {
+            throw new Error("Invalid descriptor");
         }
         Api({
-            path: '/' + propertyKey,
-            method: 'GET',
+            path: "/" + propertyKey,
+            method: "GET",
         })(target, propertyKey, descriptor);
     } else {
         return Api({
             path: target,
-            method: 'GET',
-        })
+            method: "GET",
+        });
     }
 }
 
-export function Post(target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) : void;
-export function Post(path : string) : (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) => void;
-export function Post(target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
-    if(propertyKey) {
-        if(!descriptor) {
-            throw new Error("Invalid descriptor")
+export function Post(
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+): void;
+export function Post(
+    path: string
+): (
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => void;
+export function Post(
+    target: any,
+    propertyKey?: string,
+    descriptor?: PropertyDescriptor
+) {
+    if (propertyKey) {
+        if (!descriptor) {
+            throw new Error("Invalid descriptor");
         }
         Api({
-            path: '/' + propertyKey,
-            method: 'POST',
+            path: "/" + propertyKey,
+            method: "POST",
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: '/' + propertyKey,
-            method: 'POST',
-        })
+            path: "/" + propertyKey,
+            method: "POST",
+        });
     }
 }
 
-export function Patch(target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) : void;
-export function Patch(path : string) : (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) => void;
-export function Patch(target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
-    if(propertyKey) {
-        if(!descriptor) {
-            throw new Error("Invalid descriptor")
+export function Patch(
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+): void;
+export function Patch(
+    path: string
+): (
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => void;
+export function Patch(
+    target: any,
+    propertyKey?: string,
+    descriptor?: PropertyDescriptor
+) {
+    if (propertyKey) {
+        if (!descriptor) {
+            throw new Error("Invalid descriptor");
         }
         Api({
-            path: '/' + propertyKey,
-            method: 'PATCH',
+            path: "/" + propertyKey,
+            method: "PATCH",
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: '/' + propertyKey,
-            method: 'PATCH',
-        })
+            path: "/" + propertyKey,
+            method: "PATCH",
+        });
     }
 }
 
-export function Delete(target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) : void;
-export function Delete(path : string) : (target: RouteList, propertyKey: string, descriptor: PropertyDescriptor) => void;
-export function Delete(target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
-    if(propertyKey) {
-        if(!descriptor) {
-            throw new Error("Invalid descriptor")
+export function Delete(
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+): void;
+export function Delete(
+    path: string
+): (
+    target: RouteList,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) => void;
+export function Delete(
+    target: any,
+    propertyKey?: string,
+    descriptor?: PropertyDescriptor
+) {
+    if (propertyKey) {
+        if (!descriptor) {
+            throw new Error("Invalid descriptor");
         }
         Api({
-            path: '/' + propertyKey,
-            method: 'DELETE',
+            path: "/" + propertyKey,
+            method: "DELETE",
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: '/' + propertyKey,
-            method: 'DELETE',
-        })
+            path: "/" + propertyKey,
+            method: "DELETE",
+        });
     }
 }
 
 const authMetadataKey = Symbol("validates");
 
-export function Auth(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+export function Auth(
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+) {
     Reflect.defineMetadata(authMetadataKey, true, target, propertyKey);
 }
 
@@ -135,40 +218,40 @@ const validatesMetadataKey = Symbol("validates");
 const stringFormatMetadataKey = Symbol("stringFormat");
 const visibilityMetadataKey = Symbol("visibility");
 
-export type VisibilityType = 'public' | 'private' | 'internal'
+export type VisibilityType = "public" | "private" | "internal";
 
-export function Validate(target: any, propertyKey : string) : void {
+export function Validate(target: any, propertyKey: string): void {
     const type = Reflect.getOwnMetadata("design:type", target, propertyKey);
-    if(!type) {
-        throw new Error("Missing type information")
+    if (!type) {
+        throw new Error("Missing type information");
     }
 
-    let validates: {
-        [key : string] : any
+    const validates: {
+        [key: string]: any;
     } = Reflect.getOwnMetadata(validatesMetadataKey, target) || [];
     validates[propertyKey] = type;
-    Reflect.defineMetadata( validatesMetadataKey, validates, target);
+    Reflect.defineMetadata(validatesMetadataKey, validates, target);
 }
 
-export function StringFormat(format : RegExp | string) {
-    const reg = typeof format === 'string' ? new RegExp(format) : format;
-    return (target: any, propertyKey : string) => {
-        let validates: {
-            [key : string] : RegExp
+export function StringFormat(format: RegExp | string) {
+    const reg = typeof format === "string" ? new RegExp(format) : format;
+    return (target: any, propertyKey: string) => {
+        const validates: {
+            [key: string]: RegExp;
         } = Reflect.getOwnMetadata(stringFormatMetadataKey, target) || [];
         validates[propertyKey] = reg;
-        Reflect.defineMetadata( stringFormatMetadataKey, validates, target);
-    }
+        Reflect.defineMetadata(stringFormatMetadataKey, validates, target);
+    };
 }
 
-export function Visibility(mode : VisibilityType) {
-    return (target: any, propertyKey : string) => {
-        let validates: {
-            [key : string] : VisibilityType
+export function Visibility(mode: VisibilityType) {
+    return (target: any, propertyKey: string) => {
+        const validates: {
+            [key: string]: VisibilityType;
         } = Reflect.getOwnMetadata(visibilityMetadataKey, target) || [];
         validates[propertyKey] = mode;
-        Reflect.defineMetadata( visibilityMetadataKey, validates, target);
-    }
+        Reflect.defineMetadata(visibilityMetadataKey, validates, target);
+    };
 }
 
 export const Public = Visibility("public");
@@ -177,108 +260,139 @@ export const Internal = Visibility("internal");
 
 const optionalMetadataKey = Symbol("optional");
 
-export function Optional(target: any, propertyKey : string) : void {
-    let existingOptionalParameters: string[] = Reflect.getOwnMetadata(optionalMetadataKey, target) || [];
+export function Optional(target: any, propertyKey: string): void {
+    const existingOptionalParameters: string[] =
+        Reflect.getOwnMetadata(optionalMetadataKey, target) || [];
     existingOptionalParameters.push(propertyKey);
-    Reflect.defineMetadata( optionalMetadataKey, existingOptionalParameters, target);
+    Reflect.defineMetadata(
+        optionalMetadataKey,
+        existingOptionalParameters,
+        target
+    );
 }
 
-const itemTypeMetadataKey = Symbol("itemType")
-export function ItemType(type : any) {
-    return (target: any, propertyKey : string) => {
-        let itemTypes: {
-            [key : string] : any
+const itemTypeMetadataKey = Symbol("itemType");
+export function ItemType(type: any) {
+    return (target: any, propertyKey: string) => {
+        const itemTypes: {
+            [key: string]: any;
         } = Reflect.getOwnMetadata(itemTypeMetadataKey, target) || {};
         itemTypes[propertyKey] = type;
-        Reflect.defineMetadata( itemTypeMetadataKey, itemTypes, target);
-    }
+        Reflect.defineMetadata(itemTypeMetadataKey, itemTypes, target);
+    };
 }
 
-export function toJSON(value : any, type : any, mode : VisibilityType) {
+export function toJSON(value: any, type: any, mode: VisibilityType) {
     return convertType(value, type, undefined, undefined, mode);
 }
 
-export function convertType(value : any, type : any, itemType? : any, stringFormat? : RegExp, mode? : VisibilityType) : any {
-    if(type === Object) return value;
-    else if(type === Number) {
+export function convertType(
+    value: any,
+    type: any,
+    itemType?: any,
+    stringFormat?: RegExp,
+    mode?: VisibilityType
+): any {
+    if (type === Object) return value;
+    else if (type === Number) {
         const v = +value;
-        if(isNaN(v)) throw new Error("Invalid Number Format")
+        if (isNaN(v)) throw new Error("Invalid Number Format");
         return v;
-    } else if(type === String) {
-        if(value) {
-            if(typeof value === 'object') {
-                throw new Error("Expected String")
+    } else if (type === String) {
+        if (value) {
+            if (typeof value === "object") {
+                throw new Error("Expected String");
             }
-            value = `${value}`
-            if(stringFormat) {
-                if(!stringFormat.test(value)) {
-                    throw new Error("Invalid String Format")
+            value = `${value}`;
+            if (stringFormat) {
+                if (!stringFormat.test(value)) {
+                    throw new Error("Invalid String Format");
                 }
             }
-            return value
+            return value;
         }
         return null;
-    } else if(type === Boolean) {
-        if(value === 'true' || value === '1' || value === 1 || value === true) return true;
-        else if(value === 'false' || value === '0' || value === 0 || value === false) return false;
-        throw new Error("Expected Boolean")
-    } else if(type === Date) {
-        if(typeof value !== 'number' && !value) return null;
-        if(value instanceof Date) return value;
+    } else if (type === Boolean) {
+        if (value === "true" || value === "1" || value === 1 || value === true)
+            return true;
+        else if (
+            value === "false" ||
+            value === "0" ||
+            value === 0 ||
+            value === false
+        )
+            return false;
+        throw new Error("Expected Boolean");
+    } else if (type === Date) {
+        if (typeof value !== "number" && !value) return null;
+        if (value instanceof Date) return value;
         const date = new Date(value);
-        if(isNaN(date.getTime())) {
-            throw new Error("Invalid Date Format")
+        if (isNaN(date.getTime())) {
+            throw new Error("Invalid Date Format");
         }
         return date;
-    } else if(type === Array) {
-        if(!value) return null;
-        if(!Array.isArray(value)) {
-            throw new Error("Expected Array")
+    } else if (type === Array) {
+        if (!value) return null;
+        if (!Array.isArray(value)) {
+            throw new Error("Expected Array");
         }
-        if(itemType) {
-            return value.map(it =>  convertType(it, itemType, undefined, undefined, mode))
+        if (itemType) {
+            return value.map((it) =>
+                convertType(it, itemType, undefined, undefined, mode)
+            );
         } else {
             return value;
         }
     } else {
-        if(!value) return null;
-        if(typeof value !== 'object') {
-            throw new Error("Invalid Object")
+        if (!value) return null;
+        if (typeof value !== "object") {
+            throw new Error("Invalid Object");
         }
         const target = new type();
-        const validates : {
-            [key : string] : any
+        const validates: {
+            [key: string]: any;
         } = Reflect.getMetadata(validatesMetadataKey, target) || {};
-        const itemTypes : {
-            [key : string] : any
+        const itemTypes: {
+            [key: string]: any;
         } = Reflect.getMetadata(itemTypeMetadataKey, target) || {};
-        const stringFormats : {
-            [key : string] : RegExp
+        const stringFormats: {
+            [key: string]: RegExp;
         } = Reflect.getMetadata(stringFormatMetadataKey, target) || {};
-        const modes : {
-            [key : string] : VisibilityType
+        const modes: {
+            [key: string]: VisibilityType;
         } = Reflect.getMetadata(visibilityMetadataKey, target) || {};
 
-        const optionals : string[] = Reflect.getMetadata(optionalMetadataKey, target) || [];
+        const optionals: string[] =
+            Reflect.getMetadata(optionalMetadataKey, target) || [];
 
-        for(let entry of Object.entries(validates)) {
-            if(mode) {
+        for (const entry of Object.entries(validates)) {
+            if (mode) {
                 const curMode = modes[entry[0]];
-                if(curMode) {
-                    if(mode === 'private' && curMode === 'internal') continue;
-                    else if(mode === 'public' && (curMode === 'internal' || curMode === 'private')) continue;
+                if (curMode) {
+                    if (mode === "private" && curMode === "internal") continue;
+                    else if (
+                        mode === "public" &&
+                        (curMode === "internal" || curMode === "private")
+                    )
+                        continue;
                 }
             }
 
             try {
-                const field = convertType(value[entry[0]], entry[1], itemTypes[entry[0]], stringFormats[entry[0]], mode);
-                if(typeof field !== 'number' && !field) {
-                    if(optionals.indexOf(entry[0]) === -1) {
-                        throw new Error("Missing required field")
+                const field = convertType(
+                    value[entry[0]],
+                    entry[1],
+                    itemTypes[entry[0]],
+                    stringFormats[entry[0]],
+                    mode
+                );
+                if (typeof field !== "number" && !field) {
+                    if (optionals.indexOf(entry[0]) === -1) {
+                        throw new Error("Missing required field");
                     }
                 }
                 target[entry[0]] = field;
-            } catch(e) {
+            } catch (e) {
                 throw new Error(entry[0] + ": " + e.message);
             }
         }

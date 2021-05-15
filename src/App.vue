@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <component v-for="key in items" :key="key" :is="key"/>
+        <component v-for="key in items" :key="key" :is="key" />
     </div>
 </template>
 
@@ -8,16 +8,15 @@
 import { Component, Vue } from "vue-property-decorator";
 const components = require.context("./components/", true, /\.vue$/);
 
-const componentDict = Object.fromEntries(components.keys().map(key => [
-    key.slice(2, -4),
-    components(key).default
-]));
+const componentDict = Object.fromEntries(
+    components.keys().map((key) => [key.slice(2, -4), components(key).default])
+);
 
 @Component({
-    components: componentDict
+    components: componentDict,
 })
 export default class App extends Vue {
-    items = Object.keys(componentDict)
+    items = Object.keys(componentDict);
 }
 </script>
 
@@ -41,7 +40,8 @@ label {
     display: inline-block;
 }
 
-input, textarea {
+input,
+textarea {
     width: 200px;
 }
 </style>

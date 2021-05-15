@@ -1,48 +1,47 @@
 <template>
-<div>
-    <h1>Task 3: Mini Forum</h1>
-    <button @click="run">Show Posts</button>
-    <response-viewer :response="result"/>
+    <div>
+        <h1>Task 3: Mini Forum</h1>
+        <button @click="run">Show Posts</button>
+        <response-viewer :response="result" />
 
-    <h1>Create Post</h1>
-    <div><label>Content</label><textarea v-model="content"/></div>
-    <button @click="createPost">Create</button>
-    <response-viewer :response="createPostResp"/>
+        <h1>Create Post</h1>
+        <div><label>Content</label><textarea v-model="content" /></div>
+        <button @click="createPost">Create</button>
+        <response-viewer :response="createPostResp" />
 
-    <h1>Update Post</h1>
-    <div><label>ID</label><input v-model="id" /></div>
-    <div><label>Content</label><textarea v-model="content2"/></div>
-    <button @click="patchPost">Update</button>
-    <response-viewer :response="patchPostResp"/>
+        <h1>Update Post</h1>
+        <div><label>ID</label><input v-model="id" /></div>
+        <div><label>Content</label><textarea v-model="content2" /></div>
+        <button @click="patchPost">Update</button>
+        <response-viewer :response="patchPostResp" />
 
-    <h1>Delete Post</h1>
-    <div><label>ID</label><input v-model="id" /></div>
-    <button @click="deletePost">Delete</button>
-    <response-viewer :response="deletePostResp"/>
-
-</div>
+        <h1>Delete Post</h1>
+        <div><label>ID</label><input v-model="id" /></div>
+        <button @click="deletePost">Delete</button>
+        <response-viewer :response="deletePostResp" />
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from "axios";
 
 @Component
 export default class HelloWorld extends Vue {
-    result : AxiosResponse<any> | null = null;
-    createPostResp : AxiosResponse<any> | null = null;
-    patchPostResp : AxiosResponse<any> | null = null;
-    deletePostResp : AxiosResponse<any> | null = null;
+    result: AxiosResponse<any> | null = null;
+    createPostResp: AxiosResponse<any> | null = null;
+    patchPostResp: AxiosResponse<any> | null = null;
+    deletePostResp: AxiosResponse<any> | null = null;
 
-    content = ""
-    content2 = ""
-    id = ""
+    content = "";
+    content2 = "";
+    id = "";
 
     async run() {
         try {
-            this.result = await axios.get('/posts');
-        } catch(e) {
-            if(e.response) {
+            this.result = await axios.get("/posts");
+        } catch (e) {
+            if (e.response) {
                 this.result = e.response;
             } else {
                 console.error(e);
@@ -52,11 +51,11 @@ export default class HelloWorld extends Vue {
 
     async createPost() {
         try {
-            this.createPostResp = await axios.post('/posts', {
+            this.createPostResp = await axios.post("/posts", {
                 // TODO: Task 3 Part 2
             });
-        } catch(e) {
-            if(e.response) {
+        } catch (e) {
+            if (e.response) {
                 this.createPostResp = e.response;
             } else {
                 console.error(e);
@@ -69,8 +68,8 @@ export default class HelloWorld extends Vue {
             this.patchPostResp = await axios.patch(`/posts/${this.id}`, {
                 // TODO: Task 3 Part 3
             });
-        } catch(e) {
-            if(e.response) {
+        } catch (e) {
+            if (e.response) {
                 this.patchPostResp = e.response;
             } else {
                 console.error(e);
@@ -83,8 +82,8 @@ export default class HelloWorld extends Vue {
             this.deletePostResp = await axios.patch(`/posts/${this.id}`, {
                 // TODO: Task 3 Part 4
             });
-        } catch(e) {
-            if(e.response) {
+        } catch (e) {
+            if (e.response) {
                 this.deletePostResp = e.response;
             } else {
                 console.error(e);
@@ -94,6 +93,4 @@ export default class HelloWorld extends Vue {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

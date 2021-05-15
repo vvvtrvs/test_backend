@@ -1,15 +1,15 @@
 ports:
-  - port: 8080
-    onOpen: open-preview
+    - port: 8080
+      onOpen: open-preview
 
 tasks:
-  - init: |
-      touch /tmp/.npm-lock
-      yarn install
-      rm /tmp/.npm-lock
-    command: yarn serve
-  - init: sleep 1 && while [ -f /tmp/.npm-lock ]; do sleep 1; done
-    command: yarn express
+    - init: |
+          touch /tmp/.npm-lock
+          yarn install
+          rm /tmp/.npm-lock
+      command: yarn serve
+    - init: sleep 1 && while [ -f /tmp/.npm-lock ]; do sleep 1; done
+      command: yarn express
 vscode:
-  extensions:
-    - octref.vetur@0.26.1:NrU4ZTLY6IF/1G6B/QLuIQ==
+    extensions:
+        - octref.vetur@0.26.1:NrU4ZTLY6IF/1G6B/QLuIQ==

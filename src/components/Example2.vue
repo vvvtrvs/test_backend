@@ -1,28 +1,28 @@
 <template>
-<div>
-    <h1>Example 2</h1>
-    <input v-model="msg" />
-    <button @click="run">Run</button>
-    <response-viewer :response="result"/>
-</div>
+    <div>
+        <h1>Example 2</h1>
+        <input v-model="msg" />
+        <button @click="run">Run</button>
+        <response-viewer :response="result" />
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from "axios";
 
 @Component
 export default class HelloWorld extends Vue {
-    result : AxiosResponse<any> | null = null;
-    msg = ""
+    result: AxiosResponse<any> | null = null;
+    msg = "";
 
     async run() {
         try {
-            this.result = await axios.post('/hello', {
+            this.result = await axios.post("/hello", {
                 msg: this.msg,
             });
-        } catch(e) {
-            if(e.response) {
+        } catch (e) {
+            if (e.response) {
                 this.result = e.response;
             } else {
                 console.error(e);
@@ -32,6 +32,4 @@ export default class HelloWorld extends Vue {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
