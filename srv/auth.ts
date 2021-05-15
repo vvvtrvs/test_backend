@@ -34,12 +34,14 @@ export class User {
     // End of Task 1 Part 1
 }
 
-export function signJwt(sub: string) {
+export function signJwt(sub: string): string {
     // Task 1 Part 3:
+    const token = jsonwebtoken.sign(sub, secret, {
+        algorithm: "HS256",
+    });
+    return token;
 
-    return null;
-
-    // End of task 1 part 3
+    // End of Task 1 part 3
 }
 
 export function checkJwt(token: string): User {
