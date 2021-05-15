@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import { StringFormat, Validate, Internal } from "./utils";
+import { StringFormat, Validate, Internal, Private } from "./utils";
 
 export const secret = "c2d26e94-7b5f-4d63-a821-695f4703c2a2";
 
@@ -8,15 +8,29 @@ export const userDB: {
 } = {};
 
 export class User {
-    // TODO: Task 1 Part 1:
+    // Task 1 Part 1:
+
+    // emailregex.com
+    static emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     @Validate
-    @StringFormat(/.*/)
+    @StringFormat(User.emailRegex)
     email!: string;
 
     @Validate
     @Internal
     password!: string;
 
+    @Validate
+    username!: string;
+
+    @Validate
+    @Private
+    phone!: string;
+
+    @Validate
+    @Private
+    age!: number;
     // End of Task 1 Part 1
 }
 
