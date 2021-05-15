@@ -33,7 +33,7 @@ export class User {
 
 export function signJwt(sub: string): string {
     // Task 1 Part 3:
-    const token = jsonwebtoken.sign(sub, secret, {
+    const token = jsonwebtoken.sign({ sub }, secret, {
         algorithm: "HS256",
     });
     return token;
