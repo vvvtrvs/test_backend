@@ -76,7 +76,7 @@ export default class Routes extends RouteList {
             throw new Error("This email has been registered");
 
         const pwdHash = bcrypt.hashSync(user.password, 10);
-        const userPwdHashed = Object.assign({}, user, { password: pwdHash });
+        const userPwdHashed = { ...user, password: pwdHash };
         userDB[user.email] = userPwdHashed;
 
         const accessToken = signJwt(user.email);
