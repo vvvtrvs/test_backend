@@ -8,6 +8,8 @@ import {
     ItemType,
     RouteRequest,
     toJSON,
+    StringFormat,
+    emailRegex,
 } from "./utils";
 
 import { signJwt, User, userDB } from "./auth";
@@ -22,6 +24,7 @@ class Hello {
 
 class LoginRequest {
     @Validate
+    @StringFormat(emailRegex)
     email!: string;
 
     @Validate
@@ -84,12 +87,19 @@ export default class Routes extends RouteList {
 
     // End of Task 1 Part 2
 
-    // TODO: Task 2:
+    // Task 2:
 
     @Post
     async login(req: RouteRequest, request: LoginRequest) {
+        const user = userDB[request.email];
+        if (!user) throw new Error("This email is not registered");
+
+        if (!bcrypt.compareSync(request.password, user.password))
+            throw new Error("Incorrect password");
+
+        const accessToken = signJwt(user.email);
         return {
-            accessToken: null,
+            accessToken,
         };
     }
 
