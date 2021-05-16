@@ -165,7 +165,7 @@ export function Patch(
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: "/" + propertyKey,
+            path: target,
             method: "PATCH",
         });
     }
@@ -198,7 +198,7 @@ export function Delete(
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: "/" + propertyKey,
+            path: target,
             method: "DELETE",
         });
     }
