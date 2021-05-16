@@ -45,7 +45,16 @@ class ForumPost {
     postId!: string;
 
     // TODO: Task 3 Part 1:
+    @Validate
+    content!: string;
 
+    @Validate
+    author!: User;
+
+    @Validate
+    created!: Date;
+    @Validate
+    updated!: Date;
     // End of Task 3 Part 1
 }
 
@@ -119,7 +128,16 @@ export default class Routes extends RouteList {
     // TODO: Task 3:
 
     // Task 3 Part 1: List All Posts
-    async posts(req: RouteRequest) {}
+    @Get
+    async posts(req: RouteRequest) {
+        return Object.fromEntries(
+            Object.entries(posts).map((entry) => {
+                const id = entry[0];
+                const post = entry[1];
+                return [id, toJSON(post, ForumPost, "public")];
+            })
+        );
+    }
 
     // Task 3 Part 2: Create a post associated with current user
     async createPost(req: RouteRequest) {}
