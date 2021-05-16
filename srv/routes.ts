@@ -36,6 +36,11 @@ class GetUserRequest {
     userId!: string;
 }
 
+class CreatePostRequest {
+    @Validate
+    content!: string;
+}
+
 class PostRequest {
     @Validate
     postId!: string;
@@ -140,7 +145,21 @@ export default class Routes extends RouteList {
     }
 
     // Task 3 Part 2: Create a post associated with current user
-    async createPost(req: RouteRequest) {}
+    @Post("/posts")
+    @Auth
+    async createPost(req: RouteRequest, body: CreatePostRequest) {
+        const now = new Date();
+        const post: ForumPost = {
+            postId: Object.entries(posts).length.toString(),
+            content: body.content,
+            author: req.user!,
+            created: now,
+            updated: now,
+        };
+
+        posts[post.postId] = post;
+        return toJSON(post, ForumPost, "public");
+    }
 
     // Task 3 Part 3: Update a post
     async patchPost(req: RouteRequest, body: ForumPost, params: PostRequest) {}

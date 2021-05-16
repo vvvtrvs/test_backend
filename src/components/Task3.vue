@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import axios, { AxiosResponse } from "axios";
 
 @Component
@@ -51,9 +51,19 @@ export default class HelloWorld extends Vue {
 
     async createPost() {
         try {
-            this.createPostResp = await axios.post("/posts", {
-                // TODO: Task 3 Part 2
-            });
+            this.createPostResp = await axios.post(
+                "/posts",
+                {
+                    content: this.content,
+                },
+                {
+                    headers: {
+                        Authorization: this.$store.state.accessToken
+                            ? `Bearer ${this.$store.state.accessToken}`
+                            : "",
+                    },
+                }
+            );
         } catch (e) {
             if (e.response) {
                 this.createPostResp = e.response;
