@@ -61,7 +61,7 @@ export function Api(
             );
             const routeList =
                 target[RouteListSymbol] || (target[RouteListSymbol] = {});
-            routeList[routePath] = {
+            routeList[propertyKey] = {
                 name: propertyKey,
                 path: routePath,
                 method: "GET",
@@ -132,7 +132,7 @@ export function Post(
         })(target, propertyKey, descriptor);
     } else {
         return Api({
-            path: "/" + propertyKey,
+            path: target,
             method: "POST",
         });
     }
