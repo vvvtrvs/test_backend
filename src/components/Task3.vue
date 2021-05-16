@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 @Component
 export default class HelloWorld extends Vue {
@@ -56,13 +56,7 @@ export default class HelloWorld extends Vue {
                 {
                     content: this.content,
                 },
-                {
-                    headers: {
-                        Authorization: this.$store.state.accessToken
-                            ? `Bearer ${this.$store.state.accessToken}`
-                            : "",
-                    },
-                }
+                this.requestConfig()
             );
         } catch (e) {
             if (e.response) {
@@ -99,6 +93,16 @@ export default class HelloWorld extends Vue {
                 console.error(e);
             }
         }
+    }
+
+    requestConfig(): AxiosRequestConfig {
+        return {
+            headers: {
+                Authorization: this.$store.state.accessToken
+                    ? `Bearer ${this.$store.state.accessToken}`
+                    : "",
+            },
+        };
     }
 }
 </script>
