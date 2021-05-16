@@ -87,9 +87,10 @@ export default class HelloWorld extends Vue {
 
     async deletePost() {
         try {
-            this.deletePostResp = await axios.patch(`/posts/${this.id}`, {
-                // TODO: Task 3 Part 4
-            });
+            this.deletePostResp = await axios.delete(
+                `/posts/${this.id}`,
+                this.requestConfig()
+            );
         } catch (e) {
             if (e.response) {
                 this.deletePostResp = e.response;

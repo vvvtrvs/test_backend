@@ -11,6 +11,7 @@ import {
     StringFormat,
     emailRegex,
     Patch,
+    Delete,
 } from "./utils";
 
 import { signJwt, User, userDB } from "./auth";
@@ -131,7 +132,7 @@ export default class Routes extends RouteList {
         return toJSON(userDB[params.userId], User, "public");
     }
 
-    // TODO: Task 3:
+    // Task 3:
 
     // Task 3 Part 1: List All Posts
     @Get
@@ -178,7 +179,18 @@ export default class Routes extends RouteList {
     }
 
     // Delete a post
-    async deletePost(req: RouteRequest, params: PostRequest) {}
+    @Delete("/posts/:postId")
+    @Auth
+    async deletePost(req: RouteRequest, params: PostRequest) {
+        if (!(params.postId in posts))
+            throw new Error(
+                "Attempt to delete non-existent post" + `, id:${params.postId}`
+            );
+        if (req.user!.email != posts[params.postId].author.email)
+            throw new Error("Attempt to delete unowned post");
+
+        delete posts[params.postId];
+    }
 
     // End of Task 3
 }
