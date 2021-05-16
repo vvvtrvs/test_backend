@@ -69,9 +69,13 @@ export default class HelloWorld extends Vue {
 
     async patchPost() {
         try {
-            this.patchPostResp = await axios.patch(`/posts/${this.id}`, {
-                // TODO: Task 3 Part 3
-            });
+            this.patchPostResp = await axios.patch(
+                `/posts/${this.id}`,
+                {
+                    content: this.content2,
+                },
+                this.requestConfig()
+            );
         } catch (e) {
             if (e.response) {
                 this.patchPostResp = e.response;

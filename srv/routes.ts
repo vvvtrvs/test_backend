@@ -10,6 +10,7 @@ import {
     toJSON,
     StringFormat,
     emailRegex,
+    Patch,
 } from "./utils";
 
 import { signJwt, User, userDB } from "./auth";
@@ -162,7 +163,19 @@ export default class Routes extends RouteList {
     }
 
     // Task 3 Part 3: Update a post
-    async patchPost(req: RouteRequest, body: ForumPost, params: PostRequest) {}
+    @Patch("/posts/:postId")
+    @Auth
+    async patchPost(req: RouteRequest, body: PostContent, params: PostRequest) {
+        const post = posts[params.postId];
+        if (req.user!.email != post.author.email)
+            throw new Error("Attempt to update unowned post");
+
+        const now = new Date();
+        post.updated = now;
+        post.content = body.content;
+
+        return toJSON(post, ForumPost, "public");
+    }
 
     // Delete a post
     async deletePost(req: RouteRequest, params: PostRequest) {}
