@@ -36,7 +36,7 @@ class GetUserRequest {
     userId!: string;
 }
 
-class CreatePostRequest {
+class PostContent {
     @Validate
     content!: string;
 }
@@ -147,7 +147,7 @@ export default class Routes extends RouteList {
     // Task 3 Part 2: Create a post associated with current user
     @Post("/posts")
     @Auth
-    async createPost(req: RouteRequest, body: CreatePostRequest) {
+    async createPost(req: RouteRequest, body: PostContent) {
         const now = new Date();
         const post: ForumPost = {
             postId: Object.entries(posts).length.toString(),
